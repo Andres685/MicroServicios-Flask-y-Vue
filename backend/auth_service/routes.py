@@ -1,5 +1,5 @@
 from flask import Blueprint, request, jsonify
-from models import db, User
+from .models import db, User
 
 routes = Blueprint('routes', __name__)
 
@@ -31,13 +31,13 @@ def register():
 def login():
     data = request.get_json()
 
-    username = data.get('username')
+    email = data.get('email')
     password = data.get('password')
 
-    if not username or not password:
+    if not email or not password:
         return jsonify({'message': 'Faltan datos'}), 400
 
-    user = User.query.filter_by(username=username).first()
+    user = User.query.filter_by(email = email).first()
 
     if user and user.check_password(password):
         return jsonify({

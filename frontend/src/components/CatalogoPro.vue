@@ -687,10 +687,9 @@ body.sidebar-hidden .main-layout .sidebar {
 </style>
 <script>
   document.addEventListener("DOMContentLoaded", function() {
-  // --- Configuración inicial y variables globales ---
-  const omdbKey = '52321182'; // <-- Reemplaza aquí con tu clave de OMDb
-  let allMovies = []; // Almacenará todas las películas cargadas
-  let currentMovies = []; // Películas actualmente mostradas
+  const API_BASE_URL = 'http://localhost:5001';
+  let allMovies = []; 
+  let currentMovies = [];
   let currentCategory = 'all';
   let currentSearchTerm = '';
   
@@ -721,7 +720,7 @@ body.sidebar-hidden .main-layout .sidebar {
   'The Matrix', 'Interstellar', 'The Matrix Reloaded', 'The Matrix Revolutions',
   'The Godfather Part II', 'The Dark Knight Rises', 'The Lord of the Rings: The Fellowship of the Ring',
   'The Lord of the Rings: The Two Towers', 'The Silence of the Lambs', 'Se7en', 'The Usual Suspects',
-  'Saving Private Ryan', 'The Avengers', 'The Departed', 'Gladiator', 'The Lion King', 'Titanic',
+  'Saving Private Ryan', 'The Avengers', 'The Departed', 'Gladiator']/*, 'The Lion King', 'Titanic',
   'Jurassic Park', 'Star Wars: Episode IV - A New Hope', 'Star Wars: Episode V - The Empire Strikes Back',
   'Star Wars: Episode VI - Return of the Jedi', 'The Prestige', 'The Green Mile', 'The Intouchables',
   'The Pianist', 'The Social Network', 'The Wolf of Wall Street', 'Django Unchained',
@@ -749,35 +748,8 @@ body.sidebar-hidden .main-layout .sidebar {
   'Zack Snyder’s Justice League', 'Aquaman', 'The Flash', 'The Lego Movie',
   'The Lego Batman Movie', 'The Lego Ninjago Movie', 'The Croods', 'The Croods: A New Age',
   'Sing', 'Sing 2', 'The Secret Life of Pets', 'The Secret Life of Pets 2',
-  'Tangled', 'The Good Dinosaur', 'Bolt', 'Wreck-It Ralph', 'Ralph Breaks the Internet',
-  'The Peanuts Movie', 'Rio', 'Rio 2', 'Happy Feet', 'Happy Feet Two', 'Surf’s Up',
-  'Cloudy with a Chance of Meatballs', 'Hotel Transylvania', 'Hotel Transylvania 2',
-  'Hotel Transylvania 3', 'Ice Age',
-  'Ice Age: The Meltdown', 'Ice Age: Dawn of the Dinosaurs', 'Ice Age: Continental Drift',
-  'Ice Age: Collision Course', 'Megamind', 'Monsters vs. Aliens', 'Home', 'Turbo',
-  'The Boss Baby', 'The Boss Baby: Family Business', 'Open Season', 'Open Season 2',
-  'Flushed Away', 'Chicken Run', 'Wallace & Gromit: The Curse of the Were-Rabbit',
-  'Coraline', 'Kubo and the Two Strings', 'The Boxtrolls', 'The Little Prince',
-  'Fantastic Mr. Fox', 'Isle of Dogs', 'Rango', 'Kung Fu Hustle', 'Shaolin Soccer',
-  'Crouching Tiger, Hidden Dragon', 'Hero', 'House of Flying Daggers',
-  'Pan’s Labyrinth', 'Amélie', 'Life Is Beautiful', 'Cinema Paradiso', 'The Lives of Others',
-  'Oldboy', 'Train to Busan', 'Spirited Away', 'My Neighbor Totoro',
-  'Howl’s Moving Castle', 'Princess Mononoke', 'Ponyo', 'The Wind Rises', 'The Tale of the Princess Kaguya',
-  'Grave of the Fireflies', 'Akira', 'Ghost in the Shell', 'Perfect Blue', 'Weathering with You',
-  'I Want to Eat Your Pancreas', 'A Silent Voice', 'Belle', 'Suzume', 'The Boy and the Heron',
-  'Trolls', 'Trolls World Tour', 'The Angry Birds Movie', 'The Angry Birds Movie 2',
-  'Paddington', 'Paddington 2', 'Peter Rabbit', 'Peter Rabbit 2', 'Clifford the Big Red Dog',
-  'Enola Holmes', 'Knives Out', 'Murder on the Orient Express',
-  'Death on the Nile', 'The Menu', 'The Whale', 'The Banshees of Inisherin',
-  'La La Land', 'Whiplash', 'The Greatest Showman', 'Les Misérables', 'Bohemian Rhapsody',
-  'Rocketman', 'Elvis', 'Yesterday', 'Tick, Tick... Boom!', 'Into the Woods',
-  'Chicago', 'Mamma Mia!', 'Mamma Mia! Here We Go Again', 'The Sound of Music', 'West Side Story',
-  'Encino Man', 'Napoleon Dynamite', 'Superbad', 'Pineapple Express', '21 Jump Street',
-  '22 Jump Street', 'The Hangover', 'The Hangover Part II', 'The Hangover Part III',
-  'Bridesmaids', 'Pitch Perfect', 'Pitch Perfect 2', 'Mean Girls', 'Clueless',
-  'Legally Blonde', 'Crazy Rich Asians', 'The Proposal', 'The Devil Wears Prada',
-  'Notting Hill', 'Love Actually', '500 Days of Summer', 'La La Land', 'Her', 'Begin Again'
-];
+  'Tangled', 'The Good Dinosaur'
+  ]*/;
 
   // --- Funciones de la interfaz de usuario ---
   if (menuButtons.length > 0) {
@@ -991,44 +963,66 @@ body.sidebar-hidden .main-layout .sidebar {
   // --- Funciones para cargar y renderizar películas ---
   
   // Cargar película por título usando la API de OMDb
+  /*
   function loadMovie(title) {
-    return fetch(`https://www.omdbapi.com/?apikey=${omdbKey}&t=${encodeURIComponent(title)}`)
-      .then(res => res.json())
-      .then(movie => {
-        if (movie.Response === 'True') {
-          return movie;
-        }
-        return null;
-      })
-      .catch(err => {
-        console.error('Error cargando película:', err);
-        return null;
-      });
-  }
+  return fetch(`${API_BASE_URL}/api/movie/title?title=${encodeURIComponent(title)}`)
+    .then(res => res.json())
+    .then(movie => {
+      if (movie.Response === 'True' || movie.Title) {
+        return movie;
+      }
+      return null;
+    })
+    .catch(err => {
+      console.error('Error cargando película:', err);
+      return null;
+    });
+  }*/
   
   // Cargar todas las películas en lotes
   async function loadAllMovies() {
-    loadingIndicator.style.display = 'flex';
-    videoListContainer.innerHTML = '';
+  loadingIndicator.style.display = 'flex';
+  videoListContainer.innerHTML = '';
+  
+  try {
+    const response = await fetch(`${API_BASE_URL}/api/listar/todo`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ titles: titles })
+    });
     
-    const batchSize = 5;
-    allMovies = [];
+    const data = await response.json();
     
-    for (let i = 0; i < titles.length; i += batchSize) {
-      const batch = titles.slice(i, i + batchSize);
-      const batchResults = await Promise.all(batch.map(title => loadMovie(title)));
-      
-      const validMovies = batchResults.filter(movie => movie !== null);
-      allMovies.push(...validMovies);
-      
-      // Renderizar películas a medida que se cargan
+    if (data && data.movies) {
+      allMovies = data.movies;
       currentMovies = [...allMovies];
       renderMovies(currentMovies);
+    } else {
+      allMovies = [];
+      videoListContainer.innerHTML = `
+        <div style="grid-column: 1 / -1; text-align: center; padding: 50px;">
+          <i class="uil uil-sad" style="font-size: 48px;"></i>
+          <h3>No se pudieron cargar las películas</h3>
+          <p>Intente nuevamente más tarde.</p>
+        </div>
+      `;
     }
-    
+  } catch (error) {
+    console.error('Error cargando películas:', error);
+    videoListContainer.innerHTML = `
+      <div style="grid-column: 1 / -1; text-align: center; padding: 50px;">
+        <i class="uil uil-sad" style="font-size: 48px;"></i>
+        <h3>Error al cargar películas</h3>
+        <p>Por favor intente nuevamente más tarde.</p>
+      </div>
+    `;
+  } finally {
     loadingIndicator.style.display = 'none';
     filterMovies(); // Aplicar filtros iniciales
   }
+}
   
   // Renderizar las películas en el DOM
   function renderMovies(movies) {
