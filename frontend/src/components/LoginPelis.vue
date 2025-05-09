@@ -58,7 +58,7 @@
         position: absolute;
         left: 0;
         top: 0;
-        opacity: 0.5;
+        opacity: 0.9;
         width: 100%;
         height: 100%;
         background: url("../assets/hero-img.jpg") no-repeat center center/cover;
@@ -231,7 +231,8 @@
                     });
                     const data = await res.json();
                     if (res.ok) {
-                        this.$router.push("/catalogo");
+                         this.mostrarLogin = true; // Cambia al formulario de login
+                        alert("Registro exitoso. Ahora inicia sesión.");
                     } 
                     else {
                         alert(data.message || "No se pudo registrar.");

@@ -3,10 +3,12 @@ from flask import Blueprint, jsonify, request
 import requests
 from .config import Config
 
+
 routes = Blueprint('routes', __name__)
 
 
 # Endpoint para buscar películas
+'''
 @routes.route('/movies/search', methods=['GET'])
 def search_movies():
     query = request.args.get('query', '')
@@ -173,15 +175,16 @@ def movies_by_genre(genre_id):
         
     except requests.exceptions.RequestException as e:
         return jsonify({"error": str(e)}), 500
-routes = Blueprint('routes', __name__)
-
-
+routes = Blueprint('routes1', __name__)
+'''
 @routes.route('/api/listar/todo', methods=['POST', 'OPTIONS'])
 @cross_origin()
 def get_movies_batch():
     """
     Obtiene información de múltiples películas por título
     """
+    print("Raw data:", request.data)
+    print("JSON:", request.get_json(force=True, silent=True))
     if request.method == 'OPTIONS':
         return '', 200
         

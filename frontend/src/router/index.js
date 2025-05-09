@@ -1,6 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import LoginPelis from '@/components/LoginPelis.vue'
 import CatalogoPro from '@/components/CatalogoPro.vue'
+import PerfilUsuario from '@/components/PerfilUsuario.vue'
 
 const routes = [
     {
@@ -10,6 +11,10 @@ const routes = [
     {
         path: '/catalogo',
         component: CatalogoPro
+    },
+     {
+        path: '/perfil',
+        component: PerfilUsuario
     },
     {
         path: '/',

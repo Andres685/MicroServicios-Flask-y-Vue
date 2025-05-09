@@ -1,5 +1,7 @@
 from flask import Blueprint, request, jsonify
 from .models import db, User
+from flask_jwt_extended import create_access_token
+
 
 routes = Blueprint('routes', __name__)
 
@@ -38,7 +40,7 @@ def login():
         return jsonify({'message': 'Faltan datos'}), 400
 
     user = User.query.filter_by(email = email).first()
-
+    
     if user and user.check_password(password):
         return jsonify({
             'message': 'Login exitoso',
