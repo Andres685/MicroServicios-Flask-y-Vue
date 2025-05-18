@@ -762,6 +762,8 @@ document.addEventListener("DOMContentLoaded", function() {
   'Tangled', 'The Good Dinosaur'
   ]*/;
 
+
+
   // --- Funciones de la interfaz de usuario ---
   if (menuButtons.length > 0) {
     menuButtons.forEach(btn => btn.addEventListener("click", () => document.body.classList.toggle("sidebar-hidden")));
@@ -786,6 +788,41 @@ document.addEventListener("DOMContentLoaded", function() {
       themeButton.classList.toggle("uil-sun", isDark);
       themeButton.classList.toggle("uil-moon", !isDark);
     });
+  }
+
+  async function searchMovies(query) {
+    loadingIndicator.style.display = 'flex';
+    videoListContainer.innerHTML = '';
+
+    try {
+      const response = await fetch(`${API_BASE_URL}/api/movie/search?query=${encodeURIComponent(query)}`);
+      const data = await response.json();
+      
+      if (data && !data.error) {
+        allMovies = data;  // Guarda resultados en lugar de una lista fija
+        currentMovies = [...allMovies];
+        renderMovies(currentMovies);
+      } else {
+        videoListContainer.innerHTML = `
+          <div class="no-results">
+            <i class="uil uil-search"></i>
+            <h3>No se encontraron películas</h3>
+            <p>Intenta con otro término.</p>
+          </div>
+        `;
+      }
+    } catch (error) {
+      console.error('Error buscando películas:', error);
+      videoListContainer.innerHTML = `
+        <div class="error-message">
+          <i class="uil uil-exclamation-triangle"></i>
+          <h3>Error al buscar</h3>
+          <p>Intenta nuevamente más tarde.</p>
+        </div>
+      `;
+    } finally {
+      loadingIndicator.style.display = 'none';
+    }
   }
   
   // Cargar tema de color guardado
@@ -840,15 +877,14 @@ document.addEventListener("DOMContentLoaded", function() {
   // --- Funciones para la búsqueda y autocompletado ---
   
   // Manejador para el formulario de búsqueda
-  if (searchForm) {
+    if (searchForm) {
     searchForm.addEventListener('submit', function(e) {
       e.preventDefault();
       const searchTerm = searchInput.value.trim();
       if (searchTerm) {
-        currentSearchTerm = searchTerm;
+        searchMovies(searchTerm);  // 🔥 Nueva función de búsqueda
         searchTermDisplay.textContent = searchTerm;
         searchResultsInfo.style.display = 'flex';
-        filterMovies();
         searchSuggestions.classList.remove('show');
       }
     });
