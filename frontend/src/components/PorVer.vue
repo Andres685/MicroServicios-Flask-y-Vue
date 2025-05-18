@@ -10,6 +10,7 @@
           <a href="#" class="nav-logo">
             <img src="../assets/logoSoft.png" alt="Logo" class="logo-image" />
             <h2 class="logo-text">PELISCRIPT</h2>
+            <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.0/css/line.css">
           </a>
         </div>
         <div class="nav-section nav-right">
@@ -90,23 +91,21 @@
           <div v-for="movie in movies" :key="movie.imdbID" class="video-card">
             <div class="thumbnail-container">
               <img
-                :src="movie.Poster !== 'N/A' ? movie.Poster : 'https://via.placeholder.com/300x450?text=No+Poster'"
+                :src="movie.Poster !== 'N/A' ? movie.Poster : 'https://via.placeholder.com/300x450?text=No+Image'"
+                alt="movie.Title"
                 class="thumbnail"
               />
-              <div class="duration">{{ movie.Year }}</div>
-              <div class="add-to-watchlist">
-                <button
-                  @click="markAsWatched(movie)"
-                  class="bg-blue-500 text-white p-2 rounded-full hover:bg-blue-600 transition"
-                >
-                  <i class="uil uil-check"></i>
-                </button>
+              <div class="add-to-watchlist" @click.stop="markAsWatched(movie)">
+                <i class="uil uil-check"></i>
               </div>
+              <p class="duration">{{ movie.imdbRating || 'N/A' }}/10</p>
             </div>
             <div class="video-info">
-              <h2 class="title">{{ movie.Title }}</h2>
-              <p class="channel-name">{{ movie.Genre || 'Sin género' }}</p>
-              <p class="views">{{ movie.imdbRating }}/10</p>
+              <div class="video-details">
+                <h2 class="title">{{ movie.Title }}</h2>
+                <p class="channel-name">Año: {{ movie.Year }} | {{ movie.Genre || 'Sin género' }}</p>
+                <p class="views">{{ movie.Plot ? movie.Plot.slice(0, 60) + '…' : 'Sin descripción' }}</p>
+              </div>
             </div>
           </div>
         </div>
@@ -129,7 +128,6 @@ const fetchMovies = async () => {
     loading.value = true
     error.value = null
     
-    // 1. Primero obtenemos los títulos del backend
     const response = await axios.get(`http://localhost:5002/not_watched?user_id=${userData.id}`)
     console.log('Backend response:', response.data)
     
@@ -138,7 +136,6 @@ const fetchMovies = async () => {
       throw new Error('Formato de respuesta inesperado del backend')
     }
 
-    // 2. Obtenemos detalles de cada película usando la API de búsqueda
     const searchPromises = movieTitles.map(async (title) => {
       try {
         const cleanTitle = title.trim()
@@ -146,13 +143,15 @@ const fetchMovies = async () => {
           `http://localhost:5001/api/movie/search?query=${encodeURIComponent(cleanTitle)}`
         )
         
-        // Tomamos el primer resultado que coincida exactamente con el título
         const exactMatch = response.data.find(m => m.Title.toLowerCase() === cleanTitle.toLowerCase())
         return exactMatch || response.data[0] || {
           Title: cleanTitle,
           Year: 'N/A',
           Poster: 'https://via.placeholder.com/300x450?text=Poster+no+disponible',
-          imdbID: `custom-${Math.random().toString(36).substr(2, 9)}`
+          imdbID: `custom-${Math.random().toString(36).substr(2, 9)}`,
+          Genre: 'N/A',
+          Plot: 'Sin descripción disponible',
+          imdbRating: 'N/A'
         }
       } catch (err) {
         console.error(`Error buscando "${title}":`, err)
@@ -160,7 +159,10 @@ const fetchMovies = async () => {
           Title: title,
           Year: 'N/A',
           Poster: 'https://via.placeholder.com/300x450?text=Error+cargando',
-          imdbID: `error-${Math.random().toString(36).substr(2, 9)}`
+          imdbID: `error-${Math.random().toString(36).substr(2, 9)}`,
+          Genre: 'N/A',
+          Plot: 'Sin descripción disponible',
+          imdbRating: 'N/A'
         }
       }
     })
@@ -203,31 +205,6 @@ onMounted(fetchMovies)
   padding: 0 16px;
   overflow-x: hidden;
   width: 100%;
-}
-add-to-watchlist {
-  position: absolute;
-  right: 10px;
-  top: 10px;
-  background: rgba(0, 0, 0, 0.7);
-  color: white;
-  border-radius: 50%;
-  width: 32px;
-  height: 32px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  z-index: 5;
-}
-
-.add-to-watchlist:hover {
-  background: #3b82f6;
-  transform: scale(1.1);
-}
-
-.add-to-watchlist i {
-  font-size: 1rem;
 }
 
 .video-list {
@@ -292,6 +269,10 @@ add-to-watchlist {
 .add-to-watchlist:hover {
   background: #3b82f6;
   transform: scale(1.1);
+}
+
+.add-to-watchlist i {
+  font-size: 1rem;
 }
 
 .video-info {

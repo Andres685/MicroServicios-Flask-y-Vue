@@ -211,7 +211,7 @@ export default {
             username: data.username,
             email: this.correo
           }));
-          
+          window.dispatchEvent(new CustomEvent('userLoggedIn'));
           this.$router.push("/catalogo");
         } 
         else {

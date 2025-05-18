@@ -763,8 +763,6 @@ document.addEventListener("DOMContentLoaded", function() {
   'Tangled', 'The Good Dinosaur'
   ]*/;
 
-
-
   // --- Funciones de la interfaz de usuario ---
   if (menuButtons.length > 0) {
     menuButtons.forEach(btn => btn.addEventListener("click", () => document.body.classList.toggle("sidebar-hidden")));
@@ -1033,6 +1031,7 @@ document.addEventListener("DOMContentLoaded", function() {
   videoListContainer.innerHTML = '';
   
   try {
+    // 1. Obtener las películas del catálogo
     const response = await fetch(`${API_BASE_URL}/api/listar/todo`, {
       method: 'POST',
       headers: {
@@ -1045,33 +1044,40 @@ document.addEventListener("DOMContentLoaded", function() {
     
     if (data && data.movies) {
       allMovies = data.movies;
+      
+      // 2. Obtener las películas marcadas como "no vistas" por el usuario
+      const userData = JSON.parse(localStorage.getItem('currentUser'));
+      if (userData && userData.id) {
+        const notWatchedResponse = await fetch(`${WATCHLIST_API_URL}/not_watched?user_id=${userData.id}`);
+        const notWatchedData = await notWatchedResponse.json();
+        
+        if (notWatchedData && notWatchedData.not_watched_movies) {
+          // Actualizar localStorage con las películas no vistas
+          const watchlist = allMovies.filter(movie => 
+            notWatchedData.not_watched_movies.includes(movie.Title)
+          ).map(movie => ({
+            imdbID: movie.imdbID,
+            Title: movie.Title,
+            Poster: movie.Poster,
+            Year: movie.Year
+          }));
+          
+          localStorage.setItem('watchlist', JSON.stringify(watchlist));
+        }
+      }
+      
       currentMovies = [...allMovies];
       renderMovies(currentMovies);
     } else {
-      allMovies = [];
-      videoListContainer.innerHTML = `
-        <div style="grid-column: 1 / -1; text-align: center; padding: 50px;">
-          <i class="uil uil-sad" style="font-size: 48px;"></i>
-          <h3>No se pudieron cargar las películas</h3>
-          <p>Intente nuevamente más tarde.</p>
-        </div>
-      `;
+      // Manejo de error...
     }
   } catch (error) {
-    console.error('Error cargando películas:', error);
-    videoListContainer.innerHTML = `
-      <div style="grid-column: 1 / -1; text-align: center; padding: 50px;">
-        <i class="uil uil-sad" style="font-size: 48px;"></i>
-        <h3>Error al cargar películas</h3>
-        <p>Por favor intente nuevamente más tarde.</p>
-      </div>
-    `;
+    // Manejo de error...
   } finally {
     loadingIndicator.style.display = 'none';
-    filterMovies(); // Aplicar filtros iniciales
+    filterMovies();
   }
 }
-  
   // Renderizar las películas en el DOM
   function renderMovies(movies) {
     videoListContainer.innerHTML = '';
@@ -1410,6 +1416,8 @@ document.addEventListener("DOMContentLoaded", function() {
       }, 300);
     }, 3000);
   }
+
+
   
   // --- Inicializar la aplicación ---
   loadAllMovies();
