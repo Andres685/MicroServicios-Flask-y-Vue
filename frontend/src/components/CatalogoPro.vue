@@ -699,6 +699,7 @@ body.sidebar-hidden .main-layout .sidebar {
 <script>
 document.addEventListener("DOMContentLoaded", function() {
   const API_BASE_URL = 'http://localhost:5001';
+  const WATCHLIST_API_URL = 'http://localhost:5002';
   let allMovies = []; 
   let currentMovies = [];
   let currentCategory = 'all';
@@ -1140,26 +1141,56 @@ document.addEventListener("DOMContentLoaded", function() {
   }
   
   // Funciones para gestionar la lista "Por Ver"
-  function toggleWatchlist(movie) {
-    let watchlist = JSON.parse(localStorage.getItem('watchlist') || '[]');
-    
-    const index = watchlist.findIndex(item => item.imdbID === movie.imdbID);
-    
-    if (index === -1) {
-      watchlist.push({
-        imdbID: movie.imdbID,
-        Title: movie.Title,
-        Poster: movie.Poster,
-        Year: movie.Year
-      });
-      showToast(`${movie.Title} añadida a Por Ver`);
-    } else {
-      watchlist.splice(index, 1);
-      showToast(`${movie.Title} eliminada de Por Ver`);
-    }
-    
-    localStorage.setItem('watchlist', JSON.stringify(watchlist));
-    updateWatchlistUI();
+  // Modifica la función toggleWatchlist para enviar los datos al backend
+    async function toggleWatchlist(movie) {
+      const userData = JSON.parse(localStorage.getItem('currentUser'));
+      
+      if (!userData || !userData.username) {
+        showToast("Debes iniciar sesión para esta acción");
+        return;
+      }
+
+      try {
+        const response = await fetch(`${WATCHLIST_API_URL}/mark_as_not_watched`, {  // <-- Cambiado aquí
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            user_id: userData.id,
+            movie_title: movie.Title
+          })
+        });
+
+        // Resto del código permanece igual...
+        const data = await response.json();
+        
+        if (response.ok) {
+          let watchlist = JSON.parse(localStorage.getItem('watchlist')) || [];
+          const index = watchlist.findIndex(item => item.imdbID === movie.imdbID);
+          
+          if (index === -1) {
+            watchlist.push({
+              imdbID: movie.imdbID,
+              Title: movie.Title,
+              Poster: movie.Poster,
+              Year: movie.Year
+            });
+            showToast(`${movie.Title} añadida a Por Ver`);
+          } else {
+            watchlist.splice(index, 1);
+            showToast(`${movie.Title} eliminada de Por Ver`);
+          }
+          
+          localStorage.setItem('watchlist', JSON.stringify(watchlist));
+          updateWatchlistUI();
+        } else {
+          showToast(data.message || "Error al actualizar la lista");
+        }
+      } catch (error) {
+        console.error('Error:', error);
+        showToast("Error de conexión con el servidor");
+      }
   }
 
   function updateWatchlistUI() {

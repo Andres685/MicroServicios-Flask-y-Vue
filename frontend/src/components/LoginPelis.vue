@@ -181,68 +181,75 @@
 </style>
 
 <script>
-    export default {
-        data() {
-        return {
-            mostrarLogin: true,
-            nombre: "",
-            correo: "",
-            contrasena: ""
-        };
-        },  
-        methods: {
-            async iniciarSesion() {
-                try {
-                    const res = await fetch("http://localhost:5000/login", {
-                        method: "POST",
-                        headers: {
-                            "Content-Type": "application/json"
-                        },
-                        body: JSON.stringify({
-                            email: this.correo,
-                            password: this.contrasena
-                        })
-                    });
-                    const data = await res.json();
-                    if (res.ok) {
-                        this.$router.push("/catalogo");
-                    } 
-                    else {
-                        alert(data.message || "Correo o contraseña incorrectos.");
-                    }
-                }
-                catch (error) {
-                    console.error("Error al iniciar sesión:", error);
-                    alert("Error de conexión con el servidor.");
-                }
-            },
-            async registrarCuenta() {
-                try {
-                    const res = await fetch("http://localhost:5000/register", {
-                        method: "POST",
-                        headers: {
-                            "Content-Type": "application/json"
-                        },
-                        body: JSON.stringify({
-                            username: this.nombre,
-                            email: this.correo,
-                            password: this.contrasena
-                        })
-                    });
-                    const data = await res.json();
-                    if (res.ok) {
-                         this.mostrarLogin = true; // Cambia al formulario de login
-                        alert("Registro exitoso. Ahora inicia sesión.");
-                    } 
-                    else {
-                        alert(data.message || "No se pudo registrar.");
-                    }
-                } 
-                catch (error) {
-                    console.error("Error al registrar:", error);
-                    alert("Error de conexión con el servidor.");
-                }
-            }
-        }
+export default {
+  data() {
+    return {
+      mostrarLogin: true,
+      nombre: "",
+      correo: "", 
+      contrasena: ""
     };
+  },
+  methods: {
+    async iniciarSesion() {
+      try {
+        const res = await fetch("http://localhost:5000/login", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({
+            email: this.correo,
+            password: this.contrasena
+          })
+        });
+        const data = await res.json();
+        if (res.ok) {
+          // Almacenar información del usuario en localStorage
+          localStorage.setItem('currentUser', JSON.stringify({
+            id: data.user_id,
+            username: data.username,
+            email: this.correo
+          }));
+          
+          this.$router.push("/catalogo");
+        } 
+        else {
+          alert(data.message || "Correo o contraseña incorrectos.");
+        }
+      }
+      catch (error) {
+        console.error("Error al iniciar sesión:", error);
+        alert("Error de conexión con el servidor.");
+      }
+    },
+    async registrarCuenta() {
+      try {
+        const res = await fetch("http://localhost:5000/register", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({
+            username: this.nombre,
+            email: this.correo,
+            password: this.contrasena
+          })
+        });
+        const data = await res.json();
+        if (res.ok) {
+          this.mostrarLogin = true;
+          alert("Registro exitoso. Ahora inicia sesión.");
+        } 
+        else {
+          alert(data.message || "No se pudo registrar.");
+        }
+      } 
+      catch (error) {
+        console.error("Error al registrar:", error);
+        alert("Error de conexión con el servidor.");
+      }
+    }
+  }
+};
 </script>

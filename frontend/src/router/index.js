@@ -2,6 +2,8 @@ import { createRouter, createWebHistory } from 'vue-router'
 import LoginPelis from '@/components/LoginPelis.vue'
 import CatalogoPro from '@/components/CatalogoPro.vue'
 import PerfilUsuario from '@/components/PerfilUsuario.vue'
+import PorVer from '@/components/PorVer.vue'
+
 
 const routes = [
     {
@@ -15,6 +17,11 @@ const routes = [
      {
         path: '/perfil',
         component: PerfilUsuario
+    },
+    {
+        path: '/por-ver',  // Nueva ruta para "Por Ver"
+        component: PorVer,
+        meta: { requiresAuth: true }  // Opcional: proteger la ruta
     },
     {
         path: '/',

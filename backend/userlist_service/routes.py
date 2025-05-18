@@ -28,7 +28,6 @@ def mark_as_not_watched():
     db.session.commit()
     return jsonify({'message': 'Película marcada como no vista'}), 200
 
-
 @routes.route('/not_watched', methods=['GET'])
 def get_not_watched_movies():
     user_id = request.args.get('user_id')
@@ -38,6 +37,8 @@ def get_not_watched_movies():
     not_watched_movies = UserList.query.filter_by(user_id=user_id, watched=False).all()
     movies = [entry.movie_title for entry in not_watched_movies]
     return jsonify({'not_watched_movies': movies}), 200
+
+
 
 @routes.route('/mark_as_watched', methods=['POST'])
 def mark_as_watched():
