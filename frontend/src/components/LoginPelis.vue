@@ -193,7 +193,7 @@ export default {
   methods: {
     async iniciarSesion() {
       try {
-        const res = await fetch("http://localhost:5000/login", {
+        const res = await fetch("https://servicioautentica-ekb7dwd5d9hjd3a9.eastus-01.azurewebsites.net/login", {
           method: "POST",
           headers: {
             "Content-Type": "application/json"
@@ -225,7 +225,7 @@ export default {
     },
     async registrarCuenta() {
       try {
-        const res = await fetch("http://localhost:5000/register", {
+        const res = await fetch("https://servicioautentica-ekb7dwd5d9hjd3a9.eastus-01.azurewebsites.net/register", {
           method: "POST",
           headers: {
             "Content-Type": "application/json"
