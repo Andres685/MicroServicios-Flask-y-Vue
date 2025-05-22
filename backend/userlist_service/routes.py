@@ -1,6 +1,6 @@
 # routes.py
 from flask import Blueprint, request, jsonify
-from models import db, UserList
+from .models import db, UserList
 
 routes = Blueprint('routes', __name__)
 
