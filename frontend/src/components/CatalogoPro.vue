@@ -732,7 +732,7 @@ document.addEventListener("DOMContentLoaded", function() {
   'The Matrix', 'Interstellar', 'The Matrix Reloaded', 'The Matrix Revolutions',
   'The Godfather Part II', 'The Dark Knight Rises', 'The Lord of the Rings: The Fellowship of the Ring',
   'The Lord of the Rings: The Two Towers', 'The Silence of the Lambs', 'Se7en', 'The Usual Suspects',
-  'Saving Private Ryan', 'The Avengers', 'The Departed', 'Gladiator']/*, 'The Lion King', 'Titanic',
+  'Saving Private Ryan', 'The Avengers', 'The Departed', 'Gladiator', 'The Lion King', 'Titanic',
   'Jurassic Park', 'Star Wars: Episode IV - A New Hope', 'Star Wars: Episode V - The Empire Strikes Back',
   'Star Wars: Episode VI - Return of the Jedi', 'The Prestige', 'The Green Mile', 'The Intouchables',
   'The Pianist', 'The Social Network', 'The Wolf of Wall Street', 'Django Unchained',
@@ -761,7 +761,7 @@ document.addEventListener("DOMContentLoaded", function() {
   'The Lego Batman Movie', 'The Lego Ninjago Movie', 'The Croods', 'The Croods: A New Age',
   'Sing', 'Sing 2', 'The Secret Life of Pets', 'The Secret Life of Pets 2',
   'Tangled', 'The Good Dinosaur'
-  ]*/;
+  ];
 
   // --- Funciones de la interfaz de usuario ---
   if (menuButtons.length > 0) {
