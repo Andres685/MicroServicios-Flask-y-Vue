@@ -1,9 +1,9 @@
 import os
 from flask import Flask
-from .models import db
+from models import db
 from flask_cors import CORS
-from .routes import routes
-from .config import Config
+from routes import routes
+from config import Config
 
 app = Flask(__name__)
 
