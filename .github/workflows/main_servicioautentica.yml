@@ -78,3 +78,4 @@ jobs:
           app-name: 'servicioAutentica'
           slot-name: 'Production'
           package: .
+          startup-command: 'gunicorn app:app'
