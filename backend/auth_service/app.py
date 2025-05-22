@@ -1,20 +1,30 @@
 import os
 from flask import Flask
-from models import db
 from flask_cors import CORS
+from models import db
 from routes import routes
 from config import Config
 
-app = Flask(__name__)
+def create_app():
+    app = Flask(__name__)
+    app.config.from_object(Config)
+    
+    CORS(app)
+    db.init_app(app)
+    
+    # Crear tablas al arrancar
+    with app.app_context():
+        try:
+            db.create_all()
+            print("Tablas creadas exitosamente")
+        except Exception as e:
+            print(f"Error creando tablas: {e}")
+    
+    app.register_blueprint(routes)
+    return app
 
-app.config.from_object(Config)
-CORS(app)
-db.init_app(app)
-
-app.register_blueprint(routes)
-
-with app.app_context():
-    db.create_all()
+# Crear la aplicación
+app = create_app()
 
 if __name__ == '__main__':
     port = int(os.environ.get("PORT", 8000))
