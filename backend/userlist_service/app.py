@@ -1,8 +1,8 @@
 from flask import Flask
 from flask_cors import CORS
-from .models import db
-from .routes import routes
-from .config import Config
+from models import db
+from routes import routes
+from config import Config
 from flask_migrate import Migrate
 
 def create_app():
@@ -23,5 +23,6 @@ def create_app():
     return app
 
 if __name__ == '__main__':
-    app = create_app()
-    app.run(port=5002, debug=True)
+    port = int(os.environ.get("PORT", 8000))
+    debug = os.environ.get("FLASK_ENV") == "development"
+    app.run(host="0.0.0.0", port=port, debug=debug)
