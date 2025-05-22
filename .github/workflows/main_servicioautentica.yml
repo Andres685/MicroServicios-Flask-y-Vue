@@ -22,12 +22,16 @@ jobs:
           python-version: '3.13'
 
       - name: Create and activate virtual environment
+        working-directory: ./auth_service
         run: |
           python -m venv venv
           source venv/bin/activate
 
       - name: Install dependencies
-        run: pip install -r requirements.txt
+        working-directory: ./auth_service
+        run: |
+          source venv/bin/activate
+          pip install -r requirements.txt
 
       - name: Zip artifact for deployment
         run: cd auth_service && zip -r ../release.zip .
@@ -68,6 +72,6 @@ jobs:
         uses: azure/webapps-deploy@v3
         id: deploy-to-webapp
         with:
-          app-name: 'servicioAutentica'   # <- Este es el nombre de tu App Service en Azure
+          app-name: 'servicioAutentica'
           slot-name: 'Production'
           package: .
