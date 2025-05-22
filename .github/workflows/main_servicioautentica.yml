@@ -22,19 +22,17 @@ jobs:
           python-version: '3.13'
 
       - name: Create and activate virtual environment
-        working-directory: ./auth_service
         run: |
           python -m venv venv
           source venv/bin/activate
 
       - name: Install dependencies
-        working-directory: ./auth_service
         run: |
           source venv/bin/activate
           pip install -r requirements.txt
 
       - name: Zip artifact for deployment
-        run: cd auth_service && zip -r ../release.zip .
+        run: zip -r release.zip . --exclude="venv/*" --exclude=".git/*" --exclude=".github/*"
 
       - name: Upload artifact for deployment
         uses: actions/upload-artifact@v4
