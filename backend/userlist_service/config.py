@@ -1,8 +1,8 @@
 import os
 class Config:
-    SQLALCHEMY_DATABASE_URI = os.getenv(
-        "SQLALCHEMY_DATABASE_URI",
-        "mysql://root:admin@localhost/pelis"
+    SQLALCHEMY_DATABASE_URI = (
+        "mssql+pyodbc://Adminbd:Admin123*@serversqlazureag.database.windows.net:1433/"
+        "PeliculasFlask?driver=ODBC+Driver+17+for+SQL+Server&Encrypt=yes"
     )
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     JWT_SECRET_KEY = 'tu_clave_secreta_segura_aqui'  # Cambia esto por una clave segura
