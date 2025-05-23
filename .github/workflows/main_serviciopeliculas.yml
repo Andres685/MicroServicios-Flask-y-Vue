@@ -83,4 +83,5 @@ jobs:
           app-name: 'servicioPeliculas'
           slot-name: 'Production'
           package: .
-          startup-command: 'gunicorn app:app --bind 0.0.0.0:$PORT'
+          startup-command: gunicorn movies_service.app:app --bind 0.0.0.0:$PORT
+
