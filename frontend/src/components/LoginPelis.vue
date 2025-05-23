@@ -224,7 +224,7 @@ export default {
       }
     },
     async registrarCuenta() {
-      try {
+      try {                           
         const res = await fetch("https://servicioautentica-ekb7dwd5d9hjd3a9.eastus-01.azurewebsites.net/register", {
           method: "POST",
           headers: {
