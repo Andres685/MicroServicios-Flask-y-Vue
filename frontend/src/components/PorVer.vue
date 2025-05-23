@@ -128,7 +128,7 @@ const fetchMovies = async () => {
     loading.value = true
     error.value = null
     
-    const response = await axios.get(`http://localhost:5002/not_watched?user_id=${userData.id}`)
+    const response = await axios.get(`https://serviciouserlist-d8evehd2c9e3hvch.eastus-01.azurewebsites.net/not_watched?user_id=${userData.id}`)
     console.log('Backend response:', response.data)
     
     const movieTitles = response.data.not_watched_movies
@@ -140,7 +140,7 @@ const fetchMovies = async () => {
       try {
         const cleanTitle = title.trim()
         const response = await axios.get(
-          `http://localhost:5001/api/movie/search?query=${encodeURIComponent(cleanTitle)}`
+          `https://serviciopeliculas-f0cvfwekffccdxdx.eastus-01.azurewebsites.net/api/movie/search?query=${encodeURIComponent(cleanTitle)}`
         )
         
         const exactMatch = response.data.find(m => m.Title.toLowerCase() === cleanTitle.toLowerCase())
@@ -181,7 +181,7 @@ const fetchMovies = async () => {
 
 const markAsWatched = async (movie) => {
   try {
-    await axios.post('http://localhost:5002/mark_as_watched', {
+    await axios.post('https://serviciouserlist-d8evehd2c9e3hvch.eastus-01.azurewebsites.net/mark_as_watched', {
       user_id: userData.id,
       movie_title: movie.Title,
     })

@@ -699,7 +699,7 @@ body.sidebar-hidden .main-layout .sidebar {
 <script>
 document.addEventListener("DOMContentLoaded", function() {
   const API_BASE_URL = 'https://serviciopeliculas-f0cvfwekffccdxdx.eastus-01.azurewebsites.net';
-  const WATCHLIST_API_URL = 'http://localhost:5002';
+  const WATCHLIST_API_URL = 'https://serviciouserlist-d8evehd2c9e3hvch.eastus-01.azurewebsites.net';
   let allMovies = []; 
   let currentMovies = [];
   let currentCategory = 'all';
@@ -727,7 +727,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
   // --- Títulos de películas para cargar (reducidos a 10) ---
   const titles = [
-  'The Shawshank Redemption', 'The Godfather'/*, 'The Dark Knight', 'Pulp Fiction',
+  'The Shawshank Redemption', 'The Godfather', 'The Dark Knight', 'Pulp Fiction',
   'The Lord of the Rings: The Return of the King', 'Forrest Gump', 'Inception', 'Fight Club',
   'The Matrix', 'Interstellar', 'The Matrix Reloaded', 'The Matrix Revolutions',
   'The Godfather Part II', 'The Dark Knight Rises', 'The Lord of the Rings: The Fellowship of the Ring',
@@ -739,7 +739,7 @@ document.addEventListener("DOMContentLoaded", function() {
   'The Shape of Water', 'Parasite', 'The Grand Budapest Hotel', 'Mad Max: Fury Road',
   'Spider-Man: Into the Spider-Verse', 'Coco', 'The Revenant', 'Avatar', 'Avengers: Endgame',
   'Avengers: Infinity War', 'Black Panther', 'Joker', 'Toy Story', 'Toy Story 2', 'Toy Story 3',
-  'Toy Story 4', 'Up', 'Finding Nemo', 'Inside Out', 'Monsters, Inc.', 'Shrek', 'Shrek 2',
+  'Toy Story 4', 'Up', 'Finding Nemo'/*, 'Inside Out', 'Monsters, Inc.', 'Shrek', 'Shrek 2',
   'Shrek the Third', 'Frozen', 'Frozen II', 'Beauty and the Beast', 'Aladdin', 'Mulan',
   'Moana', 'Encanto', 'Ratatouille', 'Soul', 'Luca', 'Turning Red', 'Brave', 'Big Hero 6',
   'Zootopia', 'The Incredibles', 'The Incredibles 2', 'Despicable Me', 'Despicable Me 2',
