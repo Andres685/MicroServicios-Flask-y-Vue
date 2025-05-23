@@ -698,7 +698,7 @@ body.sidebar-hidden .main-layout .sidebar {
 </style>
 <script>
 document.addEventListener("DOMContentLoaded", function() {
-  const API_BASE_URL = 'http://localhost:5001';
+  const API_BASE_URL = 'https://serviciopeliculas-f0cvfwekffccdxdx.eastus-01.azurewebsites.net';
   const WATCHLIST_API_URL = 'http://localhost:5002';
   let allMovies = []; 
   let currentMovies = [];
@@ -727,7 +727,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
   // --- Títulos de películas para cargar (reducidos a 10) ---
   const titles = [
-  'The Shawshank Redemption', 'The Godfather', 'The Dark Knight', 'Pulp Fiction',
+  'The Shawshank Redemption', 'The Godfather'/*, 'The Dark Knight', 'Pulp Fiction',
   'The Lord of the Rings: The Return of the King', 'Forrest Gump', 'Inception', 'Fight Club',
   'The Matrix', 'Interstellar', 'The Matrix Reloaded', 'The Matrix Revolutions',
   'The Godfather Part II', 'The Dark Knight Rises', 'The Lord of the Rings: The Fellowship of the Ring',
@@ -761,7 +761,7 @@ document.addEventListener("DOMContentLoaded", function() {
   'The Lego Batman Movie', 'The Lego Ninjago Movie', 'The Croods', 'The Croods: A New Age',
   'Sing', 'Sing 2', 'The Secret Life of Pets', 'The Secret Life of Pets 2',
   'Tangled', 'The Good Dinosaur'
-  ];
+  */];
 
   // --- Funciones de la interfaz de usuario ---
   if (menuButtons.length > 0) {
