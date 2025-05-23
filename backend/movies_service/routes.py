@@ -1,7 +1,7 @@
 from flask_cors import cross_origin
 from flask import Blueprint, jsonify, request
 import requests
-from .config import Config
+from config import Config
 
 
 routes = Blueprint('routes', __name__)
