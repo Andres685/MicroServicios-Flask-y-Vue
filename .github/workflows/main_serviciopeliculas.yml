@@ -33,7 +33,7 @@ jobs:
         working-directory: ./backend/movies_service
         run: |
           source venv/bin/activate
-          pip install -r ../requirements.txt
+          pip install -r requirements.txt
 
       - name: Zip artifact for deployment
         working-directory: ./backend/movies_service
